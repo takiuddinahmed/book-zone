@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { useAuth } from "./useAuth.hook";
+import { useAuth } from "../user/useAuth.hook";
 import { useNavigate } from "react-router-dom";
+import { AdminDashboardLayout } from "./admin-dashboard-layout.component";
 
 interface PrivateRouteProps {
   children?: ReactNode;
@@ -11,5 +12,5 @@ export function PrivateRoute({ children }: PrivateRouteProps) {
   const navigate = useNavigate();
   if (!isLoggedIn) navigate("/login");
 
-  return <>{children}</>;
+  return <AdminDashboardLayout>{children}</AdminDashboardLayout>;
 }

@@ -12,4 +12,4 @@ export const authorMongoSchema = new mongoose.Schema({
   name: String,
 });
 
-export const AuthorModel = mongoose.model("category", authorMongoSchema);
+export const AuthorModel = mongoose.model("author", authorMongoSchema);

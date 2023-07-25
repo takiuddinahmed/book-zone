@@ -32,7 +32,7 @@ export function LoginPage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/");
+      navigate("/admin/category");
     }
   }, [isLoggedIn]);
 
