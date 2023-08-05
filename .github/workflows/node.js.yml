@@ -27,6 +27,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - uses: mskelton/setup-yarn@v1
     - run: yarn install
-    - run: yarn build --if-present
+    - run: yarn build
     - run: cp . ~/app
     - run: cd ~/app && yarn start
