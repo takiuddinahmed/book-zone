@@ -14,6 +14,7 @@ export const bookRouter = trpc.router({
     .output(bookOutputSchema)
     .mutation(async ({ input }) => {
       const newBook = await BookModel.create(input);
+      console.log({ newBook });
       return newBook.toJSON();
     }),
 
@@ -28,7 +29,7 @@ export const bookRouter = trpc.router({
     }),
 
   get: publicProcedure
-    .output(bookOutputSchema.array())
+    // .output(bookOutputSchema.array())
     .input(
       zod.object({
         authorId: zod.string().optional(),
@@ -44,6 +45,7 @@ export const bookRouter = trpc.router({
       if (input.categoryId) {
         filter.categoryId = input.categoryId;
       }
+
       return await BookModel.find(filter);
     }),
 

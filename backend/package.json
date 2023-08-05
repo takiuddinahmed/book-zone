@@ -30,6 +30,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.0",
     "mongoose-autopopulate": "^1.0.1",
+    "react-material-file-upload": "^0.0.4",
     "zod": "^3.21.4"
   }
 }

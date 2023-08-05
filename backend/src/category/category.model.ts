@@ -9,7 +9,7 @@ export type ICategory = zod.infer<typeof categoryZodSchema> & {
 };
 
 export const categoryOutputSchema = zod.object({
-  _id: zod.instanceof(Types.ObjectId),
+  _id: zod.string(),
   name: zod.string(),
 });
 

@@ -5,6 +5,11 @@ import { Link } from "react-router-dom";
 
 export const AdminSidePanelMenuList = (
   <React.Fragment>
+    <Link to={"/admin/book"}>
+      <ListItemButton>
+        <ListItemText primary="Books" />
+      </ListItemButton>
+    </Link>
     <Link to={"/admin/author"}>
       <ListItemButton>
         <ListItemText primary="Authors" />

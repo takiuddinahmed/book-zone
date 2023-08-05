@@ -9,7 +9,7 @@ export type IAuthor = zod.infer<typeof authorZodSchema> & {
 };
 
 export const authorOutputSchema = zod.object({
-  _id: zod.instanceof(Types.ObjectId),
+  _id: zod.string(),
   name: zod.string(),
 });
 

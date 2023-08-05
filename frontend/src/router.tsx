@@ -3,6 +3,7 @@ import { RegisterPage } from "./user/register.page";
 import { LoginPage } from "./user/login.page";
 import { AdminCategoryList } from "./category/admin-category-list.component";
 import { AdminAuthorList } from "./author/admin-author-list.component";
+import { AdminBookList } from "./book/admin-book-list.component";
 
 export function AppRouter() {
   return (
@@ -12,6 +13,7 @@ export function AppRouter() {
         <Route path="login" element={<LoginPage />} />
         <Route path="admin/category" element={<AdminCategoryList />} />
         <Route path="admin/author" element={<AdminAuthorList />} />
+        <Route path="admin/book" element={<AdminBookList />} />
       </Routes>
     </BrowserRouter>
   );

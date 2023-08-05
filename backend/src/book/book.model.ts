@@ -5,7 +5,7 @@ import { categoryOutputSchema } from "../category/category.model";
 export const bookValidationSchema = zod.object({
   name: zod.string(),
   description: zod.string().default("").optional(),
-  fileUrl: zod.string().url(),
+  fileUrl: zod.string(),
   authorId: zod.string(),
   categoryId: zod.string(),
 });
@@ -13,23 +13,28 @@ export const bookValidationSchema = zod.object({
 export const bookOutputSchema = zod.object({
   _id: zod.instanceof(Types.ObjectId),
   name: zod.string(),
-  description: zod.string(),
-  fileUrl: zod.string().url(),
+  description: zod.string().optional(),
+  fileUrl: zod.string(),
   authorId: zod.string(),
   categoryId: zod.string(),
   author: authorOutputSchema,
   category: categoryOutputSchema,
 });
 
-export type IBook = zod.infer<typeof bookOutputSchema>;
+export type IBook = Omit<zod.infer<typeof bookOutputSchema>, "_id"> & {
+  _id: string;
+};
 
-export const bookMongoSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  fileUrl: String,
-  authorId: { type: String, ref: "author" },
-  categoryId: { type: String, ref: "category" },
-});
+export const bookMongoSchema = new mongoose.Schema(
+  {
+    name: String,
+    description: String,
+    fileUrl: String,
+    authorId: { type: String, ref: "author" },
+    categoryId: { type: String, ref: "category" },
+  },
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
 bookMongoSchema.virtual("author", {
   ref: "author",

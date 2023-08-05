@@ -12,7 +12,7 @@ function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: import.meta.env.VITE_BACKEND_URL,
+          url: import.meta.env.VITE_BACKEND_URL + "/trpc",
         }),
       ],
     })
