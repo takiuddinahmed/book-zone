@@ -11,16 +11,15 @@ import zod from "zod";
 export const bookRouter = trpc.router({
   create: privateProcedure
     .input(bookValidationSchema)
-    .output(bookOutputSchema)
+    // .output(bookOutputSchema)
     .mutation(async ({ input }) => {
       const newBook = await BookModel.create(input);
-      console.log({ newBook });
       return newBook.toJSON();
     }),
 
   delete: privateProcedure
     .input(zod.object({ _id: zod.string() }))
-    .output(bookOutputSchema)
+    // .output(bookOutputSchema)
     .mutation(async ({ input }) => {
       const id = input._id;
       const book = await BookModel.findByIdAndDelete(id);
@@ -50,7 +49,7 @@ export const bookRouter = trpc.router({
     }),
 
   getById: publicProcedure
-    .output(bookOutputSchema)
+    // .output(bookOutputSchema)
     .input(zod.object({ _id: zod.string() }))
     .query(async ({ input }) => {
       const book = await BookModel.findById(input._id);

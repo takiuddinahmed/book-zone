@@ -1,27 +1,34 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
+import { IBook } from "backend/src/book";
 import MUIDataTable, { MUIDataTableColumnDef } from "mui-datatables";
 import { FormEvent, useEffect, useState } from "react";
+import FileUpload from "react-material-file-upload";
 import { toast } from "react-toastify";
 import { trpc } from "../lib/trpc";
 import { PrivateRoute } from "../parent/private-route.component";
-import { IBook } from "backend/src/book";
-import FileUpload from "react-material-file-upload";
 
 type IBookData = IBook & {
   authorName: string;
   categoryName: string;
+};
+
+const initialValue = {
+  name: "",
+  description: "",
+  authorId: "",
+  categoryId: "",
 };
 
 export function AdminBookList() {
@@ -32,14 +39,11 @@ export function AdminBookList() {
   const createBookMutation = trpc.book.create.useMutation();
   const deleteBookMutation = trpc.book.delete.useMutation();
   const [files, setFiles] = useState<File[]>([]);
-  const [createFormData, setCreateFormData] = useState<
-    Pick<IBook, "name" | "description" | "authorId" | "categoryId">
-  >({
-    name: "",
-    description: "",
-    authorId: "",
-    categoryId: "",
-  });
+  const [images, setImages] = useState<File[]>([]);
+  const [createFormData, setCreateFormData] =
+    useState<Pick<IBook, "name" | "description" | "authorId" | "categoryId">>(
+      initialValue
+    );
 
   const updateFormData = (field: string, value: string) => {
     setCreateFormData((prev) => ({ ...prev, [field]: value }));
@@ -134,18 +138,23 @@ export function AdminBookList() {
 
   const onCreateSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!images.length) {
+      toast.error("Please upload image");
+      return;
+    }
     if (!files.length) {
       toast.error("Please upload file");
       return;
     }
+
     const fileForm = new FormData();
     fileForm.append("file", files[0]);
-    console.log({ fileForm, files });
+    fileForm.append("image", images[0]);
     const fileRes = await fetch(import.meta.env.VITE_BACKEND_URL + "/file", {
       method: "POST",
       body: fileForm,
     });
-    const fileData: { success: boolean; fileUrl: string } =
+    const fileData: { success: boolean; fileUrl: string; imageUrl: string } =
       await fileRes.json();
     if (!fileData.success) {
       toast.error("Unable to file upload. Try again");
@@ -154,20 +163,24 @@ export function AdminBookList() {
     createBookMutation.mutate({
       ...createFormData,
       fileUrl: fileData.fileUrl.toString(),
+      imageUrl: fileData.imageUrl.toString(),
     });
   };
 
   useEffect(() => {
+    const data = createBookMutation.data as IBook;
     if (createBookMutation.isSuccess) {
       setBookData((prev) => [
         ...prev,
         {
-          ...(createBookMutation.data as IBook),
-          authorName: createBookMutation.data.author.name,
-          categoryName: createBookMutation.data.category.name,
+          ...data,
+          authorName: data.author.name,
+          categoryName: data.category.name,
         },
       ]);
       createBookMutation.reset();
+      setOpenCreateDialog(false);
+      setCreateFormData(initialValue);
     }
     if (createBookMutation.isError) {
       toast(createBookMutation.error.message);
@@ -192,7 +205,7 @@ export function AdminBookList() {
     <PrivateRoute>
       <MUIDataTable
         columns={columns}
-        title="All Authors"
+        title="All Books"
         data={bookData || []}
         options={{
           customToolbar: () => (
@@ -231,7 +244,20 @@ export function AdminBookList() {
               onChange={(e) => updateFormData("description", e.target.value)}
             />
 
-            <FileUpload sx={{ mt: 2 }} value={files} onChange={setFiles} />
+            <FileUpload
+              sx={{ mt: 2 }}
+              value={images}
+              onChange={setImages}
+              title="Image"
+              accept={"image/*"}
+            />
+            <FileUpload
+              sx={{ mt: 2 }}
+              value={files}
+              onChange={setFiles}
+              title="Pdf file"
+              accept={"application/pdf"}
+            />
 
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="category-select-label">Category</InputLabel>
@@ -282,7 +308,19 @@ export function AdminBookList() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={createBookMutation.isLoading}
               >
+                {createBookMutation.isLoading && (
+                  <CircularProgress
+                    color="inherit"
+                    size={"1rem"}
+                    sx={{
+                      color: "primary",
+                      my: 0.25,
+                      mr: 1,
+                    }}
+                  />
+                )}
                 Submit
               </Button>
             </Box>

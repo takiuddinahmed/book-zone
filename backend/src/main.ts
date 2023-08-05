@@ -7,19 +7,12 @@ import cors from "cors";
 import mongoose from "mongoose";
 import fileUpload from "express-fileupload";
 import { UploadedFile } from "express-fileupload";
-import path from "path";
+import path, { resolve } from "path";
 import os from "os";
 import "dotenv/config";
-
-import zod from "zod";
-
-const envSchema = zod.object({
-  MONGO_URI: zod.string(),
-  FILE_PATH: zod.string().default(__dirname),
-});
-
-const ENV = envSchema.parse(process.env);
-
+import { ENV } from "./utils/env.util";
+import { uploadFile } from "./utils/upload.util";
+import fs from "fs/promises";
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true, limit: "100mb" }));
@@ -36,26 +29,27 @@ server.use(
   })
 );
 
-server.post("/file", (req, res) => {
-  const file = req.files?.file as UploadedFile;
-  console.log(req.files);
-  if (!file) res.status(400).json({ message: "File not attached" });
-  const timeStamp = new Date().getTime();
-  const fileName = timeStamp + "-" + encodeURI(file.name.toString().trim());
+fs.mkdir(path.join(ENV.FILE_PATH, "file"), { recursive: true });
+fs.mkdir(path.join(ENV.FILE_PATH, "image"), { recursive: true });
 
-  file.mv(path.join(ENV.FILE_PATH, fileName), (err) => {
-    if (!err) {
-      res.json({ success: true, fileUrl: "/file/" + fileName });
-    } else {
-      console.error(err);
-      res.status(400).json({ success: false, error: "Unable to upload" });
-    }
-  });
+server.post("/file", async (req, res) => {
+  const file = req.files?.file as UploadedFile;
+  const image = req.files?.image as UploadedFile;
+  if (!file) res.status(400).json({ message: "File not attached" });
+
+  try {
+    const fileUrl = await uploadFile(file, "file");
+    const imageUrl = await uploadFile(image, "image");
+    res.json({ success: true, fileUrl, imageUrl });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-server.get("/file/:filename", (req, res) => {
-  const filename = req.params.filename;
-  res.sendFile(path.join(ENV.FILE_PATH, filename), (err) => {
+server.get("/file/:subfolder/:filename", (req, res) => {
+  const { filename, subfolder } = req.params;
+
+  res.sendFile(path.join(ENV.FILE_PATH, subfolder, filename), (err) => {
     if (err) {
       console.log(err);
     }

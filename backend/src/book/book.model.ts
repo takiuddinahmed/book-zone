@@ -6,6 +6,7 @@ export const bookValidationSchema = zod.object({
   name: zod.string(),
   description: zod.string().default("").optional(),
   fileUrl: zod.string(),
+  imageUrl: zod.string(),
   authorId: zod.string(),
   categoryId: zod.string(),
 });
@@ -15,6 +16,7 @@ export const bookOutputSchema = zod.object({
   name: zod.string(),
   description: zod.string().optional(),
   fileUrl: zod.string(),
+  imageUrl: zod.string(),
   authorId: zod.string(),
   categoryId: zod.string(),
   author: authorOutputSchema,
@@ -30,6 +32,7 @@ export const bookMongoSchema = new mongoose.Schema(
     name: String,
     description: String,
     fileUrl: String,
+    imageUrl: String,
     authorId: { type: String, ref: "author" },
     categoryId: { type: String, ref: "category" },
   },
