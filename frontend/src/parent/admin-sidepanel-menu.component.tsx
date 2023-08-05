@@ -1,14 +1,20 @@
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 export const AdminSidePanelMenuList = (
   <React.Fragment>
+    <Link to={"/admin/author"}>
+      <ListItemButton>
+        <ListItemText primary="Authors" />
+      </ListItemButton>
+    </Link>
+
     <ListItemButton>
-      <ListItemText primary="Authors" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemText primary="Categories" />
+      <Link to={"/admin/category"} className="">
+        <ListItemText primary="Categories" />
+      </Link>
     </ListItemButton>
   </React.Fragment>
 );
