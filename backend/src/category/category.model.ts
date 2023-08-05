@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import zod from "zod";
 export const categoryZodSchema = zod.object({
   name: zod.string(),
@@ -7,6 +7,11 @@ export const categoryZodSchema = zod.object({
 export type ICategory = zod.infer<typeof categoryZodSchema> & {
   _id: string;
 };
+
+export const categoryOutputSchema = zod.object({
+  _id: zod.instanceof(Types.ObjectId),
+  name: zod.string(),
+});
 
 export const categoryMongoSchema = new mongoose.Schema({
   name: String,
