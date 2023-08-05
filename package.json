@@ -4,6 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build": "yarn build:frontend && yarn build:backend",
+    "start": "cd backend && yarn start",
+    "build:frontend": "cd frontend && yarn build",
+    "build:backend": "cd backend && yarn build"
+  },
   "workspaces": [
     "backend",
     "frontend"
