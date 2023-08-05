@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "build": "yarn build:frontend && yarn build:backend",
-    "start": "cd backend && yarn start",
-    "build:frontend": "cd frontend && yarn build",
-    "build:backend": "cd backend && yarn build",
+    "start": "yarn workspace backend start",
+    "build:frontend": "yarn workspace frontend build",
+    "build:backend": "yarn workspace backend build",
     "install:both": "yarn workspace frontend install && yarn workspace backend install"
   },
   "workspaces": [
