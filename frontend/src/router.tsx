@@ -4,6 +4,7 @@ import { LoginPage } from "./user/login.page";
 import { AdminCategoryList } from "./category/admin-category-list.component";
 import { AdminAuthorList } from "./author/admin-author-list.component";
 import { AdminBookList } from "./book/admin-book-list.component";
+import { Homepage } from "./homepage/homepage.component";
 
 export function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export function AppRouter() {
         <Route path="admin/category" element={<AdminCategoryList />} />
         <Route path="admin/author" element={<AdminAuthorList />} />
         <Route path="admin/book" element={<AdminBookList />} />
+        <Route path="/" element={<Homepage />} />
       </Routes>
     </BrowserRouter>
   );
