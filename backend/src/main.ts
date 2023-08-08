@@ -32,7 +32,11 @@ server.use(
 fs.mkdir(path.join(ENV.FILE_PATH, "file"), { recursive: true });
 fs.mkdir(path.join(ENV.FILE_PATH, "image"), { recursive: true });
 
-server.post("/file", async (req, res) => {
+server.get("/api", (req, res) => {
+  res.json({ message: "It works" });
+});
+
+server.post("/api/file", async (req, res) => {
   const file = req.files?.file as UploadedFile;
   const image = req.files?.image as UploadedFile;
   if (!file) res.status(400).json({ message: "File not attached" });
@@ -46,7 +50,7 @@ server.post("/file", async (req, res) => {
   }
 });
 
-server.get("/file/:subfolder/:filename", (req, res) => {
+server.get("/api/file/:subfolder/:filename", (req, res) => {
   const { filename, subfolder } = req.params;
 
   res.sendFile(path.join(ENV.FILE_PATH, subfolder, filename), (err) => {
@@ -58,7 +62,7 @@ server.get("/file/:subfolder/:filename", (req, res) => {
 });
 
 server.use(
-  "/trpc",
+  "/api/trpc",
   createExpressMiddleware({
     router: appRouter,
   })
