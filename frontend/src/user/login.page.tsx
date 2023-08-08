@@ -120,8 +120,8 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <MuiLink color="inherit" href="https://mui.com/">
-        Your Website
+      <MuiLink color="inherit" component={Link} to="/">
+        Book Zone
       </MuiLink>{" "}
       {new Date().getFullYear()}
       {"."}

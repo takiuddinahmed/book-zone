@@ -12,6 +12,7 @@ import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import { ReactNode } from "react";
 import { AdminSidePanelMenuList } from "./admin-sidepanel-menu.component";
 import { useAuth } from "../user/useAuth.hook";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -56,13 +57,14 @@ export function AdminDashboardLayout({ children }: { children: ReactNode }) {
             }}
           >
             <Typography
-              component="h1"
+              component={Link}
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, textDecoration: "none" }}
+              to={"/"}
             >
-              Dashboard
+              Book Zone
             </Typography>
             <IconButton color="inherit">
               <Button

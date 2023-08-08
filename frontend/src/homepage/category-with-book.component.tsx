@@ -7,7 +7,7 @@ interface CategoryWithBookProps {
 }
 
 export function CategoryWithBook({ data }: CategoryWithBookProps) {
-  const books = data.books.slice(0, 6);
+  const books = data.books;
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h5" sx={{}}>

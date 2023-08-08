@@ -19,10 +19,17 @@ export function PublicNavbar() {
       sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
     >
       <Toolbar sx={{ flexWrap: "wrap" }}>
-        <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+        <Typography
+          component={RouterLink}
+          to={"/"}
+          variant="h6"
+          color="inherit"
+          noWrap
+          sx={{ flexGrow: 1, textDecoration: "none" }}
+        >
           Book Zone
         </Typography>
-        <nav>
+        {/* <nav>
           <MuiLink
             color="text.primary"
             component={RouterLink}
@@ -49,7 +56,7 @@ export function PublicNavbar() {
           >
             AUTHORS
           </MuiLink>
-        </nav>
+        </nav> */}
         {isLoggedIn && (
           <Button
             component={RouterLink}
