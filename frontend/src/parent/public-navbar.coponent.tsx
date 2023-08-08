@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  Container,
   Link as MuiLink,
   Toolbar,
   Typography,
@@ -26,7 +27,12 @@ export function PublicNavbar() {
             color="text.primary"
             component={RouterLink}
             to={"/"}
-            sx={{ my: 1, mx: 1.5, fontWeight: "bold", textDecoration: "none" }}
+            sx={{
+              my: 1,
+              mx: 1.5,
+              fontWeight: "bold",
+              textDecoration: "none",
+            }}
           >
             CATEGORIES
           </MuiLink>
@@ -34,7 +40,12 @@ export function PublicNavbar() {
             color="text.primary"
             component={RouterLink}
             to={"/"}
-            sx={{ my: 1, mx: 1.5, fontWeight: "bold", textDecoration: "none" }}
+            sx={{
+              my: 1,
+              mx: 1.5,
+              fontWeight: "bold",
+              textDecoration: "none",
+            }}
           >
             AUTHORS
           </MuiLink>
